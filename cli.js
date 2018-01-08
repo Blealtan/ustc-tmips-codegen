@@ -1,5 +1,5 @@
 import {
-  transform
+  transformLine
 } from '.';
 
 var argv = require('minimist')(process.argv.slice(2), {
@@ -30,7 +30,7 @@ try {
       (await readFile(input))
       .toString('ascii')
       .split('\n')
-      .map(transform)
+      .map(transformLine)
       .reduce((acc, val) => acc.concat(val))
       .join('\n')
     )
