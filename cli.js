@@ -24,13 +24,17 @@ if (argv._.length !== 1) {
 var input = argv._[0]
 var output = 'o' in argv ? argv.o : input + '.s'
 
-(async() =>
-  await writeFile(output,
-    (await readFile(input))
-    .toString('ascii')
-    .split('\n')
-    .map(transform)
-    .reduce((acc, val) => acc.concat(val))
-    .join('\n')
-  )
-)()
+try {
+  (async() =>
+    await writeFile(output,
+      (await readFile(input))
+      .toString('ascii')
+      .split('\n')
+      .map(transform)
+      .reduce((acc, val) => acc.concat(val))
+      .join('\n')
+    )
+  )()
+} catch (error) {
+  console.error(error)
+}
