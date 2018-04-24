@@ -1,6 +1,6 @@
 'use strict';
 
-function _parse(source) {
+exports.parse = function (source) {
     let assert = () => {};
 
     let splitRegex = /[ \t,]+/;
@@ -18,7 +18,11 @@ function _parse(source) {
         "move",
         "lui",
         "lw",
-        "jr"
+        "jr",
+        "j",
+        "jal",
+        "beqz",
+        "nop"
     ];
 
     let pseudoInstructions = [
@@ -130,5 +134,3 @@ function _parse(source) {
 
     return assembly;
 }
-
-exports.parse = _parse;
