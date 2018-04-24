@@ -1,6 +1,6 @@
 'use strict';
 
-const transform = require(".").transform;
+const tmips = require(".");
 const minimist = require("minimist");
 const promisify = require("util").promisify;
 const fs = require("fs");
@@ -26,7 +26,10 @@ var output = 'o' in argv ? argv.o : input + '.out';
 
 (async () => {
   try {
-    await writeFile(output, JSON.stringify(transform((await readFile(input)).toString('ascii'))));
+    let input = (await readFile(input)).toString('ascii');
+    let parsed = tmips.parse(input);
+    let trimmed = tmips.trim(parsed);
+    await writeFile(output, JSON.stringify(trimmed));
   } catch (error) {
     console.error(error);
   }
