@@ -1,12 +1,10 @@
-function transformLine(line) {
-  let transformedTMips = []
-  //! TODO: do actual transforming stuff.
-  return transformedTMips
+'use strict';
+
+const parse = require("./parser").parse;
+
+function _transform(asm) {
+  //!TODO: perform transformation on provided assembly representation.
+  return parse(asm);
 }
 
-function transform(lines) {
-  return lines.map(elem => ({"src": elem, "res": transformLine(elem)}))
-}
-
-exports.transform = transform
-exports.transformLine = transformLine
+exports.transform = _transform;
