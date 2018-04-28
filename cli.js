@@ -26,10 +26,11 @@ var output = 'o' in argv ? argv.o : input + '.out';
 
 (async () => {
   try {
-    let input = (await readFile(input)).toString('ascii');
-    let parsed = tmips.parse(input);
+    let input_content = (await readFile(input)).toString('ascii');
+    let parsed = tmips.parse(input_content);
     let trimmed = tmips.trim(parsed);
-    await writeFile(output, JSON.stringify(trimmed));
+    let tmips_ver = tmips.transform(trimmed);
+    await writeFile(output, JSON.stringify(tmips_ver));
   } catch (error) {
     console.error(error);
   }
