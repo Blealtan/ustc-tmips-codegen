@@ -30,7 +30,7 @@ var output = 'o' in argv ? argv.o : input + '.out';
     let parsed = tmips.parse(input_content);
     let trimmed = tmips.trim(parsed);
     let tmips_ver = tmips.transform(trimmed);
-    await writeFile(output, JSON.stringify(tmips_ver));
+    await writeFile(output, tmips.stringify(tmips_ver));
   } catch (error) {
     console.error(error);
   }

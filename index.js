@@ -133,7 +133,7 @@ function* matchAllLabel(oprand) {
   let match;
   while (match = re.exec(oprand)) yield match[1];
 }
-exports.trim = parsed_asm => {
+exports.trim = (parsed_asm, reserve_loc = true) => {
   let trimmed_asm = {};
   let known_label = new Set();
   for (let seg in parsed_asm) {
@@ -174,6 +174,12 @@ exports.trim = parsed_asm => {
       inst.labels =
           inst.labels.filter(l => !l.startsWith('$') || used_label.has(l));
     });
+  if (reserve_loc)
+    for (let seg in trimmed_asm)
+      trimmed_asm[seg].forEach(inst => {
+        inst.directives =
+            inst.directives.filter(d => !(d[0] == '.loc' || d[0] == '.file' || d[0] == '.section'));
+      });
   return trimmed_asm;
 };
 
@@ -232,6 +238,19 @@ exports.transform = parsed_asm => {
                  inst_impl[inst.instruction[0]](inst) :
                  [inst]));
     res[key] = [].concat(...insts);
+  }
+  return res;
+};
+
+exports.stringify = parsed_asm => {
+  let res = '';
+  for (let sec in parsed_asm) {
+    res += `\t${sec}\n`;
+    for (let inst of parsed_asm[sec]) {
+      for (let dir of inst.directives) res += `\t${dir.join(' ')}\n`;
+      for (let label of inst.labels) res += `${label}:\n`;
+      if (inst.instruction) res += `\t${inst.instruction.join(' ')}\n`;
+    }
   }
   return res;
 }
